@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>images/logo.png</file>
+        <file>materialdesignicons-webfont.ttf</file>
+    </qresource>
+</RCC>
