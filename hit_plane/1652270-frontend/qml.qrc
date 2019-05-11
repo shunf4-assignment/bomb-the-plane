@@ -4,5 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>images/logo.png</file>
         <file>materialdesignicons-webfont.ttf</file>
+        <file>images/logo_small.png</file>
     </qresource>
 </RCC>
