@@ -1230,6 +1230,9 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
                 gameLog += opName() + QStringLiteral(u" 轰炸了 ") + username() + QStringLiteral(u" 的 ") + m_map->indexToCoordStr(*reinterpret_cast<const unsigned char *>(g->data.constData() + 4)) + (bool(hitG & (Grid::Body | Grid::Tail)) ? QStringLiteral(u" 命中机身") : bool(hitG & Grid::Head) ? QStringLiteral(u" 命中机头") : QStringLiteral(u" 未中")) + "\n";
                 gameLogChanged();
 
+                if (bool(hitG & (Grid::Head | Grid::Body | Grid::Tail)))
+                    jhp->playPWMfor(1000, 1000);
+
                 setMapPos1(Coord_None);
                 setMapPos2(Coord_None);
                 switchMapTo(UIState::MapCampTheirSide);
@@ -1263,6 +1266,10 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
                 m_popupHint[enumToQStr(UIState::TPopupOpAction)] = m_popupHint.value(enumToQStr(UIState::TPopupOpAction)).toString() + (right ? QStringLiteral(u" 猜中") : QStringLiteral(u" 未猜中"));
 
                 gameLog += opName() + QStringLiteral(u" 猜测了 ") + username() + QStringLiteral(u" 某架飞机的机头和机尾：") + m_map->indexToCoordStr(*reinterpret_cast<const unsigned char *>(g->data.constData() + 4)) + QStringLiteral(u",") + m_map->indexToCoordStr(*reinterpret_cast<const unsigned char *>(g->data.constData() + 5)) + (right ? QStringLiteral(u" 猜中") : QStringLiteral(u" 未猜中")) + "\n";
+
+                if (right)
+                    jhp->playPWMfor(1000, 1000);
+
                 gameLogChanged();
 
                 popupHintChanged();
@@ -1280,6 +1287,9 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
 
                 gameLog += opName() + QStringLiteral(u" 猜中了") + username() + QStringLiteral(u" 的最后一架飞机，") + username() + QStringLiteral(u" 败了。") + "\n";
                 gameLogChanged();
+
+                if (true)
+                    jhp->playPWMfor(1000, 1000);
 
                 popupHintChanged();
                 setState(State::Idle);
@@ -1527,6 +1537,9 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
                 gameLog += username() + QStringLiteral(u" 轰炸了 ") + opName() + QStringLiteral(u" 的 ") + m_map->indexToCoordStr(mapPos1()) + (bool(gg & (Grid::Body | Grid::Tail)) ? QStringLiteral(u" 命中机身") : bool(gg & Grid::Head) ? QStringLiteral(u" 命中机头") : QStringLiteral(u" 未中")) + "\n";
                 gameLogChanged();
 
+                if (bool(gg & (Grid::Body | Grid::Tail | Grid::Head)))
+                    jhp->playPWMfor(1000, 1000);
+
                 setState(State::WaitOp);
                 setMapPos1(Coord_None);
                 setMapPos2(Coord_None);
@@ -1602,6 +1615,10 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
                 m_popupHint[enumToQStr(UIState::TPopupActionResult)] = (good ? QStringLiteral(u"猜中") : QStringLiteral(u"未猜中"));
 
                 gameLog += username() + QStringLiteral(u" 猜测了 ") + opName() + QStringLiteral(u" 某架飞机的机头和机尾：") + m_map->indexToCoordStr(mapPos1()) + QStringLiteral(u",") + m_map->indexToCoordStr(mapPos2()) + (good ? QStringLiteral(u" 猜中") : QStringLiteral(u" 未猜中")) + "\n";
+
+                if (good)
+                    jhp->playPWMfor(1000, 1000);
+
                 gameLogChanged();
 
                 popupHintChanged();
@@ -1617,6 +1634,8 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
             case MsgType::Win:
             {
                 m_popupHint[enumToQStr(UIState::TPopupOpAction)] = username() + QStringLiteral(u" 猜中了") + opName() + QStringLiteral(u" 的最后一架飞机，") + username() + QStringLiteral(u" 胜了。");
+
+                jhp->playPWMfor(1000, 1000);
 
                 popupHintChanged();
                 setState(State::Idle);
@@ -1638,6 +1657,12 @@ void BTP::triggerEvent(Event ev, const QVariant &param)
 
 
 out:
+    if (state() == State::Deploy || state() == State::MyTurn) {
+        this->jhp->flashLedfor(700);
+    } else {
+        this->jhp->stopFlashLed();
+    }
+
     return;
 }
 

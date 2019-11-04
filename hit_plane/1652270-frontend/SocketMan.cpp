@@ -4,7 +4,7 @@
 #include <QNetworkProxy>
 #include <QTextCodec>
 
-#define SERVER_HOST "10.60.102.252"
+#define SERVER_HOST "home.rivage.tk"
 #define SERVER_PORT 20270
 #define TIMERCONN_TIME 2000
 #define TIMERHEARTBEAT_TIME 2000

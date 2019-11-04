@@ -6,6 +6,10 @@ win32 {
     QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO  += /utf-8 /wd4819
 }
 
+android {
+    QT += androidextras
+}
+
 QT += quick network qml core gui
 CONFIG += c++11
 
@@ -28,7 +32,8 @@ SOURCES += \
     Friend.cpp \
     FriendsModel.cpp \
     BTPMapModel.cpp \
-    BTP.cpp
+    BTP.cpp \
+    JavaHelper.cpp
 
 RESOURCES += qml.qrc
 
@@ -52,7 +57,8 @@ HEADERS += \
     FriendsModel.h \
     BTPMapModel.h \
     BTP.h \
-    enum.h
+    enum.h \
+    JavaHelper.h
 
 DISTFILES += \
     android/AndroidManifest.xml \
@@ -61,7 +67,12 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    android/src/com/friendlyarm/AndroidSDK/FileCtlEnum.java \
+    android/src/com/friendlyarm/AndroidSDK/GPIOEnum.java \
+    android/src/com/friendlyarm/AndroidSDK/HardwareControler.java \
+    android/src/com/friendlyarm/AndroidSDK/SPI.java \
+    android/src/com/friendlyarm/AndroidSDK/SPIEnum.java
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_PACKAGE_SOURCE_DIR = \

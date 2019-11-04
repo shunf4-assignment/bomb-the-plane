@@ -12,6 +12,8 @@
 #include "FriendsModel.h"
 #include "enum.h"
 
+#include "JavaHelper.h"
+
 class BTP : public QObject
 {
     Q_OBJECT
@@ -149,6 +151,7 @@ public slots:
     void onReconnRemainingTimeChanged();
 
 public:
+    JavaHelper *jhp;
 
     QString socketStateText() const;
     qreal reconnRemainingTime() const;
@@ -215,6 +218,7 @@ public:
 
     void switchMapTo(UIState side);
 private:
+
 
     State m_state;
     UIState m_uiState;

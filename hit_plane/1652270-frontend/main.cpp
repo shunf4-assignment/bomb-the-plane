@@ -6,6 +6,7 @@
 #include <QFontDatabase>
 #include <QDir>
 #include "BTP.h"
+#include "JavaHelper.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    qmlRegisterUncreatableType<JavaHelper>("sj.bombtheplane", 1, 0, "JavaHelper", "No reason");
     qmlRegisterUncreatableType<BTP>("sj.bombtheplane", 1, 0, "BTP", "No reason");
     qmlRegisterUncreatableType<Friend>("sj.bombtheplane", 1, 0, "Friend", "No reason");
     qmlRegisterUncreatableType<FriendsModel>("sj.bombtheplane", 1, 0, "FriendsModel", "No reason");
@@ -37,10 +39,14 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableMetaObject(MsgTypeNS::staticMetaObject, "sj.bombtheplane", 1, 0, "MsgTypeNS", "No reason");
     qmlRegisterUncreatableMetaObject(GridNS::staticMetaObject, "sj.bombtheplane", 1, 0, "GridNS", "No reason");
 
+
     BTP &btp = *new BTP;
+    JavaHelper &jhp = *new JavaHelper;
+    btp.jhp = &jhp;
     //engine.setObjectOwnership(&im, QQmlEngine::JavaScriptOwnership);
 
     engine.rootContext()->setContextProperty("btp", &btp);
+    engine.rootContext()->setContextProperty("jhp", &jhp);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

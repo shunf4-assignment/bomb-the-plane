@@ -1,6 +1,11 @@
 #include "head.h"
 
 void Mysql::connect(std::string host, std::string user, std::string passwd, std::string db, unsigned int port, const char *unix_socket, unsigned long clientflag) {
+	mysql = mysql_init(nullptr);
+	if (mysql == nullptr) {
+		std::cerr << "mysql_init failure" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 	if (mysql_real_connect(mysql, host.c_str(), user.c_str(), passwd.c_str(), db.c_str(), port, unix_socket, clientflag) == nullptr) {
 		std::cerr << "mysql_real_connect failure" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -9,6 +14,7 @@ void Mysql::connect(std::string host, std::string user, std::string passwd, std:
 }
 
 Mysql::Res Mysql::query(std::string q) {
+	connect("localhost", "u1652270", "u1652270", "db1652270");
 	if (mysql_query(mysql, q.c_str())) {
 		std::cerr << "mysql_query failure" << std::endl;
 		return {};
@@ -31,6 +37,7 @@ Mysql::Res Mysql::query(std::string q) {
 }
 
 void Mysql::realQuery(std::string q, int len) {
+	connect("localhost", "u1652270", "u1652270", "db1652270");
 	if (mysql_real_query(mysql, q.data(), len)) 
 		std::cerr << "mysql_real_query failure" << std::endl;
 	else
